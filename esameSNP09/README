@@ -1,0 +1,13 @@
+Per la soluzione verranno implementati 3 programmi:
+
+- Il Server tcp
+- Il Client 
+- Il Multicaster
+
+Il server tcp riceverà le richieste del client e risponderà al client inviando la riga letta dal file (che per semplicità sarà quello della traccia o questo)
+Il client ricevuta la riga dal server, la scriverà in una pipe che verrà letta dal multicaster
+Il multicaster leggerà dal proprio standard input e invierà in multicast un datagramma contenente la riga.
+
+Il server per ottimizzare i tempi di risposta provvederà a fare un mapping in memoria del file in modo da poter accedere direttamente dalla ram e senza dover leggere ogni volta il file
+Il client predisporrà la pipe chiudendo i file descriptor appropriati e duplicando il capo di uscita della pipe sullo standard input del child che sarà il processo multicaster
+Il server gestirà la concorrenza mediante l'uso di thread dedicati a gestire il singolo client

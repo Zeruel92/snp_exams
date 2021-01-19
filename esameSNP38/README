@@ -1,0 +1,42 @@
+Per la risoluzione di questo esercizio è stata usata la funzione ftw di APUE
+presa come spunto dall'esempio $APUE/filedir/ftw8.c, che veniva usata per
+contare il numero di file e directory data una directory di partenza,
+modificandola per poter confrontare l'inode dei file esplorati con quello
+ricavato facendo lo stat del file descriptor 0 (STDIN_FILENO).
+Una volta trovato l'inode uguale abbiamo trovato il file che viene usato come 
+standard input per cui possiamo stampare il messaggio con il path del file. 
+
+
+Per eseguire compilare tramite make, e lanciare il comando
+
+./wmstdin
+
+Oppure per modificare lo standard input usando una redirezione di bash
+
+./wmstdin < filedausare 
+
+
+Su linux lanciando il programma senza redirezione ottengo come file:
+
+./wmstdin 
+Lo standard input sta usando il file con inode 7 inizio la ricerca
+Stai usando il file /sys/fs/cgroup/cpuset/release_agent con inode 7 come standard input per questo processo
+
+eseguendo stat del file:
+
+ stat /sys/fs/cgroup/cpuset/release_agent
+  File: /sys/fs/cgroup/cpuset/release_agent
+  Dim.: 0               Blocchi: 0          Blocco di IO: 4096   file regolare vuoto
+Device: 2eh/46d Inode: 7           Coll.: 1
+Accesso: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Accesso  : 2020-12-22 10:15:24.296150218 +0100
+Modifica : 2020-12-22 10:15:24.296150218 +0100
+Cambio   : 2020-12-22 10:15:24.296150218 +0100
+Creazione: -
+
+
+Effettuando la redirezione invece viene mostrato il file corretto
+
+./wmstdin < wmstdin.c 
+Lo standard input sta usando il file con inode 9044348 inizio la ricerca
+Stai usando il file //home/gabry/Scrivania/SNP/Esercizi/esami/esameSNP38/src/wmstdin.c con inode 9044348 come standard input per questo processo

@@ -1,0 +1,4 @@
+Prima di eseguire ogni tipo di operazione di apertura dei socket, il server dovrà diventare un daemon eseguendo la funzione daemonize, questa chiamata è importante che venga eseguita all'inizio in quanto chiuderà tutti i file descriptor che ci sono nel processo, eventualmente anche quelli legati ai socket.
+Una volta diventato un daemon il server dovra aprire 10 listening socket TCP, il che significa che dovrà ascoltare su 10 porte (in questo caso dalla 49999 alla 50009). Non appena un socket viene aperto e il server si è messo in ascolto su di esso, viene aggiunto a file descriptor set in modo tale che il thread che andrà a gestire i dati possa servirsi di una select per applicare l'I/O Multiplexing.
+
+Per testare la connessione è stato incluso un client TCP molto semplice che invia una stringa passata come argomento al server.

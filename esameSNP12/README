@@ -1,0 +1,32 @@
+# Esame 12
+
+La soluzione si compone di due programmi: server.c e client.c 
+
+## Server
+
+Il server è un server TCP che ascolta le connessioni in arrivo sulla porta 49999
+
+La gestione dei client avviene tramite l'utilizzo di un thread disposto alla ricezione dei "comandi" dei client e di una thread comune che invia gli aggiornamenti della posizione di tutti i client
+
+La posizione di tutti gli utenti è memorizzata per mezzo di una struttura players. Ogni volta che un client si collega al server un nuovo nodo di questa struttura viene istanziato e linkato in fondo alla lista, e ogni volta che un client chiude la connessione il suo rispettivo nodo viene rimosso dalla lista e la memoria utilizzata liberata.
+Il thread predisposto alla ricezione dei dati da quel client ogni volta che riceverà un nuovo comando aggiornerà la posizione di quel client all'interno della struttura in modo che il thread che invia gli aggiornamenti possa comunicarlo a tutti i client connessi. Il messaggio di aggiornamento avrà la forma "id:<id>,x:<coordinata x>,y:<coordinata y>" il client avrà cura di usare queste informazioni per crare una mappa simile a quella del server che potrà usare per mostrare la posizione di tutti i client connessi
+
+Per poter inviare a tutti i client gli aggiornamenti ogni volta che si collega un nuovo client il suo socket viene inserito all'interno di un file descriptor set, e rimosso una volta che la connessione viene chiusa.
+
+il server può essere semplicemente avviato tramite 
+
+./server
+
+## Client
+
+Il client una volta connesso al server riceve subito il suo identificativo dal server a quel punto imposta la modalità raw per il terminale di controllo e una volta ricevuti i primi dati di aggiornamento dal server "disegna" sul terminale la posizione del client e di altri eventuali client connessi. 
+Il client può conoscere la propria posizione in quanto verrà visualizzato un ragno, mentre per gli altri client verrà mostrato un fiore
+
+Il client premendo i tasti w a s d può rispettivamente spostare il ragno su, sinistra,giu,destra mentre usando il tasto q il client terminerà la connessione con il server e riporterà il terminale di controllo in modalità "coocked"
+
+Il client per essere in grado sia di leggere lo standard input che i dati in arrivo dal socket si serve di un file descriptor set e della chiamata select
+
+
+per lanciare il client si utilizzi:
+
+./client <hostname o ip del server>

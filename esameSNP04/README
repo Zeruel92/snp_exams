@@ -1,0 +1,4 @@
+Per realizzare il server è stato preso spunto dal server che usava la select proposto da Beeji modificandolo leggermente per rimandare al client che ha scritto al server lo stesso messaggio ma in maiuscolo,
+ovviamente si può fare qualsiasi tipo di risposta anche inviare dei singoli caratteri random.
+
+Il client è un classic client tcp con la differenza che una volta connesso al server crea due thread che si divideranno l'accesso al socket attraverso l'utilizzo di mutex e condition variable

@@ -1,0 +1,34 @@
+Utilizzando lo standard POSIX per le shared memories si va incontro a una problematica riguardante l'uso di 
+ftruncate per allargare la zona di memoria condivisa dai processi quando si inserisce un nuovo elemento.
+In fatti su MacOS non è permesso aumentare la dimensione della memoria condivisa una volta creata.
+Per risolvere questo problema è stato previsto un limite massimo di elementi della lista concatenata da poter inserire in memoria
+in modo tale da non dover allargare la memoria stessa.
+
+Su Linux questo problema non si presenta per tanto si potrebbe fare a meno del limite massimo di elementi.
+A questo proposito è stato previsto nelle funzioni di gestione della lista concatenata degli switch che in base al sistema in uso 
+fa un uso diverso della shared memory in base alle limitazioni discusse.
+
+Un altro problema è quello della gestione della lista concatenata:
+
+in C classicamente per creare una lista concatenata si crea una struttura del tipo:
+
+struct nodo{
+    /*
+    * dati da memorizzare
+    */
+    struct nodo *next;
+    };
+    
+dove next è un puntatore all'elemento successivo della lista. In questo caso sssendo la lista posizionata all'interno di una memoria condivisa tra più processi
+gli indirizzi di memoria virtuale mappati all'interno di un processo differiranno sicuramente da quelli che verranno mappati nell'altro processo per cui non è
+possibile referenziare in processi differenti i vari nodi usando un "approccio classico"
+
+Una possibile idea potrebbe essere quella di memorizzare un offset con il quale poter calcolare l'indirizzo dell'elemento successivo della lista partendo dall'indirizzo
+del primo nodo che viene mappato nel processo, in modo da svincolare l'uso di puntatori che andrebbero a creare conflitti 
+
+struct nodo{
+    /*
+    * dati da memorizzare
+    */
+   int next; /* indice dell'elemento successivo */
+};
