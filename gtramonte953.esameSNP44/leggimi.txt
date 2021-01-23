@@ -1,0 +1,9 @@
+Per confrontare i due meccanismi di concorrenza per un server TCP mediante l'uso di thread o fork possiamo immaginare uno scenario nel 
+quale sia nel primo caso che nel secondo caso si connettano un numero fissato di client e ogni avvio di una fork o di una thread
+ si conta il tempo impiegato per fare la medesima operazione (ad esempio rimandare al client quello che ha inviato al server) e chiudere la connessione.
+ Per fare questo scriviamo due implementazioni del server TCP una che usa le fork e una che usa le thread
+ e un Client che sia in grado di avviare il numero fissato di connessioni con il server e che valuti le prestazioni.
+ 
+ L'implementazione tramite fork si trova nel file server1.c quella con le thread in server2.c il client è comune alle due implementazioni
+ 
+ per eseguire il client usare ./client <hostname> <messaggio da inviare>
