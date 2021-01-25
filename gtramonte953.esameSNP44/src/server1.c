@@ -49,15 +49,19 @@ int main(int argc, char *argv[]){
    		
    		switch(pid){
    			case 0: /* child process */
+   				close(listener);
    				n = recv(newclient,buf,BUFSIZ,0);
    				if(n > 0){
+   					/*printf("ricevuto dal client: %s\n",buf);*/
    					send(newclient,buf,strlen(buf),0);
    					close(newclient);
    				}
+   				exit(0);
    				break;
    			case -1:
    				err_sys("Fork failed");
    			default:
+   				close(newclient);
    			break;
    		}
    	}

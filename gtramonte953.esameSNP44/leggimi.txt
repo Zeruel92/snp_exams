@@ -7,3 +7,11 @@ quale sia nel primo caso che nel secondo caso si connettano un numero fissato di
  L'implementazione tramite fork si trova nel file server1.c quella con le thread in server2.c il client è comune alle due implementazioni
  
  per eseguire il client usare ./client <hostname> <messaggio da inviare>
+ 
+ 
+ con la versione fork otteniamo il seguente risultato
+ Il tempo impiegato dal server per rispondere è di 6569 microsecondi
+ 
+ con la versione thread:
+ 
+Il tempo impiegato dal server per rispondere è di 5755 microsecondi

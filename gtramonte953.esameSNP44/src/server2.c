@@ -36,7 +36,8 @@ int main(int argc, char *argv[]){
 		continue;
 		}
 		setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
-		if (bind(listener, p->ai_addr, p->ai_addrlen) < 0) { close(listener);
+		if (bind(listener, p->ai_addr, p->ai_addrlen) < 0) { 
+			close(listener);
 			continue;
 		}
 		break; 
@@ -46,10 +47,11 @@ int main(int argc, char *argv[]){
    	listen(listener,10);
    	
    	while(1){
-   		newclient = accept(listener,(struct sockaddr *)&remoteaddr, &addrlen);
    		
-   		pthread_create(&tid,NULL,&thread_f,&newclient);
-		
+   		newclient = accept(listener,(struct sockaddr *)&remoteaddr, &addrlen);   		
+   		pthread_create(&tid,NULL,&thread_f,newclient);
+   		
+
    	}
    
 }
@@ -58,10 +60,10 @@ int main(int argc, char *argv[]){
 void * thread_f(void *args){
 	char buf[BUFSIZ];
 	int n;
-	int socket  = *((int *)args);
-	
+	int socket  = (int) args;
 	n = recv(socket,buf,BUFSIZ,0);
    	if(n > 0){
+   		/*printf("Ricevuto dal client %s\n",buf);*/
    		send(socket,buf,strlen(buf),0);
    		close(socket);
 	}
